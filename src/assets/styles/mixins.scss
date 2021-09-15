@@ -1,0 +1,275 @@
+// Animations
+@mixin animation($animation...) {
+  -webkit-animation: $animation;
+  -o-animation: $animation;
+  animation: $animation;
+}
+
+@mixin keyframe ($animation-name) {
+  @-webkit-keyframes #{$animation-name} {
+      @content;
+  }
+  @-moz-keyframes #{$animation-name} {
+      @content;
+  }
+  @-o-keyframes #{$animation-name} {
+      @content;
+  }
+  @keyframes #{$animation-name} {
+      @content;
+  }
+}
+// 
+
+// Tranform and transition
+@mixin transition-set ($prop, $time, $type) {
+  -webkit-transition: $prop $time $type;
+     -moz-transition: $prop $time $type;
+      -ms-transition: $prop $time $type;
+       -o-transition: $prop $time $type;
+          transition: $prop $time $type;
+}
+
+@mixin transform-rotateZ-set ($deg) {
+  -webkit-transform: rotateZ($deg);
+     -moz-transform: rotateZ($deg);
+      -ms-transform: rotateZ($deg);
+       -o-transform: rotateZ($deg);
+          transform: rotateZ($deg);
+}
+
+@mixin transform-rotateY-set ($deg) {
+  -webkit-transform: rotateY($deg);
+     -moz-transform: rotateY($deg);
+      -ms-transform: rotateY($deg);
+       -o-transform: rotateY($deg);
+          transform: rotateY($deg);
+}
+
+@mixin transform-rotate-all-set ($xdeg, $ydeg, $zdeg) {
+  -webkit-transform: rotateX($xdeg) rotateY($ydeg) rotateZ($zdeg);
+     -moz-transform: rotateX($xdeg) rotateY($ydeg) rotateZ($zdeg);
+      -ms-transform: rotateX($xdeg) rotateY($ydeg) rotateZ($zdeg);
+       -o-transform: rotateX($xdeg) rotateY($ydeg) rotateZ($zdeg);
+          transform: rotateX($xdeg) rotateY($ydeg) rotateZ($zdeg);
+}
+
+@mixin skewY($deg) {
+  -webkit-transform: skewY($deg);
+     -moz-transform: skewY($deg);
+      -ms-transform: skewY($deg);
+          transform: skewY($deg);
+}
+
+@mixin transform-translate ($x, $y) {
+  -webkit-transform: translate($x, $y);
+  -moz-transform: translate($x, $y);
+  -ms-transform: translate($x, $y);
+  -o-transform: translate($x, $y);
+  transform: translate($x, $y);
+}
+
+@mixin transform-translate-rotate ($x, $y, $deg) {
+  -webkit-transform: translate($x, $y) rotate($deg);
+  -moz-transform: translate($x, $y) rotate($deg);
+  -ms-transform: translate($x, $y) rotate($deg);
+  -o-transform: translate($x, $y) rotate($deg);
+  transform: translate($x, $y) rotate($deg);
+}
+// 
+
+// Properties calculate
+@mixin calc($property, $expression) {
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: -moz-calc(#{$expression});
+  #{$property}: -ms-calc(#{$expression});
+  #{$property}: -o-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+@mixin calc-important($property, $expression) {
+  #{$property}: -webkit-calc(#{$expression}) !important;
+  #{$property}: -moz-calc(#{$expression}) !important;
+  #{$property}: -ms-calc(#{$expression}) !important;
+  #{$property}: -o-calc(#{$expression}) !important;
+  #{$property}: calc(#{$expression}) !important;
+}
+// 
+
+// Background
+@mixin background-position-1($pos1, $pos2) {
+  background-position: -webkit-calc(#{$pos1}) $pos2;
+  background-position: -moz-calc(#{$pos1}) $pos2;
+  background-position: -ms-calc(#{$pos1}) $pos2;
+  background-position: -o-calc(#{$pos1}) $pos2;
+  background-position: calc(#{$pos1}) $pos2;
+}
+
+@mixin background-position-2($pos1, $pos2) {
+  background-position: $pos1 -webkit-calc(#{$pos2});
+  background-position: $pos1 -moz-calc(#{$pos2});
+  background-position: $pos1 -ms-calc(#{$pos2});
+  background-position: $pos1 -o-calc(#{$pos2});
+  background-position: $pos1 calc(#{$pos2});
+}
+
+@mixin background-set($url, $props, $position, $size) {
+  background: url(#{$url}) $props;
+  background-position: $position;
+  background-size: $size;
+}
+
+// Image
+@mixin image-background() {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+// 
+
+// Element appearance
+@mixin appearance-set($style) {
+  -webkit-appearance: $style;
+  -moz-appearance: $style;
+  -ms-appearance: $style;
+  -o-appearance: $style;
+  appearance: $style;
+}
+// 
+
+// Button style
+@mixin button-style($background, $color, $border: none, $radius: 0) {
+  background: $background;
+  color: $color;
+  border: $border;
+  border-radius: $radius;
+}
+// 
+
+// Position set
+@mixin position-absolute($type: static, $top: unset, $right: unset, $bottom: unset, $left: unset) {
+  position: $type;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+}
+// 
+
+// Limit paragraph by line number
+@mixin text-limit-by-line($lineNumber, $lineHeight: $base-line-height) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lineNumber;
+  line-height: $lineHeight;
+  max-height: $lineHeight*$lineNumber;
+  // white-space: nowrap;
+  word-break: break-all;
+}
+
+@mixin text-limit-one-line($height) {
+  max-height: $height;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+}
+// 
+
+// Font size responsive
+@mixin font-size-caculator($minSize, $offsetSizeNumber, $minViewportWidth, $offsetViewportWidthNumber) {
+  // $offsetSizeNumber = $maxSizeNumber - $minSizeNumber
+  // $offsetViewportWidthNumber = $maxViewportWidthNumber - $minViewportWidthNumber
+  font-size: -webkit-calc($minSize + $offsetSizeNumber * ((100vw - $minViewportWidth) / $offsetViewportWidthNumber));
+  font-size: -moz-calc($minSize + $offsetSizeNumber * ((100vw - $minViewportWidth) / $offsetViewportWidthNumber));
+  font-size: -ms-calc($minSize + $offsetSizeNumber * ((100vw - $minViewportWidth) / $offsetViewportWidthNumber));
+  font-size: -o-calc($minSize + $offsetSizeNumber * ((100vw - $minViewportWidth) / $offsetViewportWidthNumber));
+  font-size: calc($minSize + $offsetSizeNumber * ((100vw - $minViewportWidth) / $offsetViewportWidthNumber));
+}
+// 
+
+// Html Dom direction
+@mixin html-direction-content($direction) {
+  // $direction acept [ltr] left to right or [rtl] right to left
+  direction: $direction;
+}
+// 
+
+// Flex
+@mixin flexbox() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+// Flexbox justify content
+// From https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Advanced_layouts_with_flexbox  #Flexbox_Justify_Content
+@mixin flex-just($value: flex-start) {
+  @if $value==flex-start {
+      -webkit-box-pack: start;
+      -moz-box-pack: start;
+      -ms-flex-pack: start;
+  }
+  @else if $value==flex-end {
+      -webkit-box-pack: end;
+      -moz-box-pack: end;
+      -ms-flex-pack: end;
+  }
+  @else if $value==space-between {
+      -webkit-box-pack: justify;
+      -font-box-pack: justify;
+      -ms-flex-pack: justify;
+  }
+  @else if $value==space-around {
+      -ms-flex-pack: distribute;
+  }
+  @else {
+      -webkit-box-pack: $value;
+      -moz-box-pack: $value;
+      -ms-flex-pack: $value;
+  }
+  -webkit-justify-content: $value;
+  justify-content: $value;
+}
+
+// Flexbox vertical align items
+@mixin flex-align-items($value: stretch) {
+  @if $value==flex-start {
+      -webkit-box-align: start;
+      -ms-flex-align: start;
+  }
+  @else if $value==flex-end {
+      -webkit-box-align: end;
+      -ms-flex-align: end;
+  }
+  @else {
+      -webkit-box-align: $value;
+      -ms-flex-align: $value;
+  }
+  -webkit-align-items: $value;
+  -moz-align-items: $value;
+  align-items: $value;
+}
+
+// https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Mixins#Flexbox_Justify_Content#Flexbox_flow_(shorthand)
+@mixin flex-flow($values: (row nowrap)) {
+  // No Webkit/FF Box fallback.
+  -webkit-flex-flow: $values;
+  -ms-flex-flow: $values;
+  flex-flow: $values;
+}
+@mixin fadeover-set {
+opacity: 1;
+&:hover {
+  opacity: 0.85;
+}
+@media screen and (max-width: $base-mobile) {
+  &:hover {
+      opacity: 1;
+  }
+}
+}

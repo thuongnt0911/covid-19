@@ -1,0 +1,29 @@
+.sidebar {
+  border-right: 1px solid #eee;
+  position: fixed;
+  height: 100%;
+
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 100%;
+  }
+
+  .el-menu {
+    border: none !important;
+    background-color: #393e46 !important;
+  }
+
+  .el-menu-item {
+    color: #909399 !important;
+  }
+
+  .is-active {
+    color: #fff !important;
+    border-right: 3px solid #fff;
+  }
+
+  .el-menu-item:focus,
+  .el-menu-item:hover {
+    background: none !important;
+  }
+}
