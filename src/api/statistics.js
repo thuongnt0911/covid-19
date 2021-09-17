@@ -1,9 +1,14 @@
 export default ($axios) => ({
-  getWorlDaysCases(data, startDate, endDate) {
+  getWorlDaysCases(startDate, endDate) {
     return $axios({
       url: `world?from=${startDate}&to=${endDate}`,
       method: 'get',
-      data,
+    })
+  },
+  getVietnamLastDay(lastDay) {
+    return $axios({
+      url: `live/country/vietnam/status/confirmed/date/${lastDay}`,
+      method: 'get',
     })
   },
 })

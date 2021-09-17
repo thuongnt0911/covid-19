@@ -14,14 +14,12 @@ export default {
     datasets: {
       type: Array,
     },
+    backgroundColor: {
+      type: Array,
+    },
   },
   data() {
-    return {
-      data: {
-        labels: this.labelsData,
-        datasets: this.datasets,
-      },
-    }
+    return {}
   },
 
   mounted() {
@@ -32,7 +30,15 @@ export default {
       var pieChart = this.$refs.chart.getContext('2d')
       new Chart(pieChart, {
         type: 'doughnut',
-        data: this.data,
+        data: {
+          labels: this.labelsData,
+          datasets: [
+            {
+              data: this.datasets,
+              backgroundColor: this.backgroundColor,
+            },
+          ],
+        },
         options: {
           segmentShowStroke: true,
           segmentStrokeColor: 'rgba(0,0,0,0)',

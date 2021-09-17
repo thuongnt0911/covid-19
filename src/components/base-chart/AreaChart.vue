@@ -32,7 +32,23 @@ export default {
       var areaChart = this.$refs.chart.getContext('2d')
       new Chart(areaChart, {
         type: 'line',
-        data: this.data,
+        data: {
+          labels: this.labelsData,
+          datasets: [
+            {
+              label: 'Total Confirmed In The Word',
+              data: this.datasets,
+              fill: true,
+              borderColor: '#7C83FD',
+              borderWidth: 2,
+              pointBorderWidth: 4,
+              pointHoverRadius: 5,
+              pointHoverBorderWidth: 1,
+              pointRadius: 2,
+              backgroundColor: 'rgba(150, 186, 255, 0.4)',
+            },
+          ],
+        },
         options: {
           legend: {
             position: 'bottom',

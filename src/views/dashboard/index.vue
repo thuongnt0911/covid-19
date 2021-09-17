@@ -73,6 +73,7 @@
             class="chart-content"
             :labelsData="dataChartVietNam.labels"
             :datasets="dataChartVietNam.datasets"
+            :backgroundColor="dataChartVietNam.backgroundColor"
           />
         </div>
       </div>
@@ -95,48 +96,14 @@ export default {
   data() {
     return {
       summayData: [],
-      countriesData: [],
       dataChartWorld: {
-        labels: [
-          'JAN',
-          'FEB',
-          'MAR',
-          'APR',
-          'MAY',
-          'JUN',
-          'JUL',
-          'AUG',
-          'SEP',
-          'OCT',
-          'NOV',
-          'DEC',
-        ],
-        datasets: [
-          {
-            label: 'Total Confirmed In The Word',
-            data: [
-              5020, 7022, 22242, 14040, 14141, 4111, 4544, 4327, 5555, 6811,
-              12313, 2020,
-            ],
-            fill: true,
-            borderColor: '#7C83FD',
-            borderWidth: 2,
-            pointBorderWidth: 4,
-            pointHoverRadius: 5,
-            pointHoverBorderWidth: 1,
-            pointRadius: 2,
-            backgroundColor: 'rgba(150, 186, 255, 0.4)',
-          },
-        ],
+        labels: [],
+        datasets: [],
       },
       dataChartVietNam: {
-        labels: ['Cases', 'Tested', 'Injected', 'Deaths'],
-        datasets: [
-          {
-            data: [133.3, 86.2, 52.2, 51.2],
-            backgroundColor: ['#5EAAA8', '#F1AE89', '#8675A9', '#D35D6E'],
-          },
-        ],
+        labels: [],
+        datasets: [],
+        backgroundColor: [],
       },
     }
   },
@@ -145,17 +112,13 @@ export default {
       return moment
     },
   },
-  mounted() {},
+  mounted() {
+    this.getDataWorldOnChart()
+    this.getDataVietNamLastDay()
+  },
   created() {
     this.$store.dispatch('getSummaryInfo').then((data) => {
       this.summayData = _.cloneDeep(data.Global)
-      this.countriesData = _.cloneDeep(data.Countries)
-    })
-    const date = this.getDaysRange(30)
-
-    this.$store.dispatch('getWorldDaysCases', {
-      startDate: date.startDate,
-      endDate: date.endDate,
     })
   },
   methods: {
@@ -164,7 +127,7 @@ export default {
 
       var day = new Date(d.getTime() - days * 24 * 60 * 60 * 1000)
 
-      var toDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+      var toDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate() - 1}`
 
       var fromDate = `${day.getFullYear()}-${
         day.getMonth() + 1
@@ -174,6 +137,24 @@ export default {
         startDate: fromDate,
         endDate: toDate,
       }
+    },
+    getDataWorldOnChart() {
+      const date = this.getDaysRange(7)
+      this.$store.dispatch('getWorldDaysCases', date).then((data) => {
+        data.forEach((element) => {
+          const label = moment(element.Date).format('MM/DD')
+          this.dataChartWorld.labels.push(label)
+          this.dataChartWorld.datasets.push(element.TotalConfirmed)
+        })
+      })
+    },
+    getDataVietNamLastDay() {
+      const date = this.getDaysRange(7)
+      this.$store
+        .dispatch('getVietnamCaseLastDay', date.endDate)
+        .then((data) => {
+          console.log(data)
+        })
     },
   },
 }

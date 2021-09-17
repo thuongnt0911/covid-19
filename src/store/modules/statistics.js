@@ -13,8 +13,27 @@ const statisticsData = {
     },
   },
   actions: {
-    getWorldDaysCases({ startDate, endDate }) {
-      return api.statisticsData.getWorlDaysCases(startDate, endDate)
+    getWorldDaysCases({ commit }, { startDate, endDate }) {
+      return new Promise((resolve, reject) => {
+        api.statisticsData
+          .getWorlDaysCases(startDate, endDate)
+          .then((result) => {
+            const data = result.data
+            resolve(data)
+          })
+          .catch((err) => reject(err))
+      })
+    },
+    getVietnamCaseLastDay({ commit }, lastDay) {
+      return new Promise((resolve, reject) => {
+        api.statisticsData
+          .getVietnamLastDay(lastDay)
+          .then((result) => {
+            const data = result.data
+            resolve(data)
+          })
+          .catch((e) => reject(e))
+      })
     },
   },
 }
