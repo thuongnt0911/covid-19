@@ -3,12 +3,7 @@
     <div class="logo">
       <h3>Covid - 19</h3>
     </div>
-    <div class="flex-between">
-      <div class="navbar__search">
-        <el-autocomplete v-model="search" placeholder="Please input">
-          <i class="el-icon-search el-input__icon" slot="suffix" />
-        </el-autocomplete>
-      </div>
+    <div class="flex-end">
       <div class="navbar__content">
         <el-button class="noti-button" icon="el-icon-bell" circle />
         <div class="navbar__content-profile">
@@ -29,9 +24,7 @@
 <script>
 export default {
   data() {
-    return {
-      search: '',
-    }
+    return {}
   },
 }
 </script>

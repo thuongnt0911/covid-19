@@ -41,7 +41,7 @@ export default {
 .main-content {
   margin-left: 200px;
   width: 100%;
-  background-color: rgba(237, 238, 247, 0.5);
+  background-color: #f1f1f1;
   padding: 20px;
 }
 </style>

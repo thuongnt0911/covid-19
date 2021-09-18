@@ -41,6 +41,7 @@
         <div class="right">
           <div class="chart">
             <AreaChart
+              v-if="isChartWorld"
               :labelsData="dataChartWorld.labels"
               :datasets="dataChartWorld.datasets"
               ref="test"
@@ -50,26 +51,20 @@
       </div>
       <div class="content-item align-stretch">
         <div class="map">
-          <h3 class="title-head">Real Time</h3>
+          <h3 class="title-head">Map Data</h3>
           <MapChart
+            v-if="showMap"
             class="map-content"
-            :countryData="{
-              US: 4,
-              CA: 7,
-              GB: 8,
-              IE: 14,
-              ES: 1,
-              CN: 20,
-            }"
-            highColor="#ff0000"
-            lowColor="#aaaaaa"
+            :countryData="dataMap"
+            highColor="#E41749"
+            lowColor="#FFFDAF"
             countryStrokeColor="#909090"
-            defaultCountryFillColor="#dadada"
           />
         </div>
         <div class="chart">
           <h3 class="title-head">Covid in Viet Nam</h3>
           <PieChart
+            v-if="isChartVNL"
             class="chart-content"
             :labelsData="dataChartVietNam.labels"
             :datasets="dataChartVietNam.datasets"
@@ -95,16 +90,20 @@ export default {
   },
   data() {
     return {
+      showMap: false,
+      isChartWorld: false,
+      isChartVNL: false,
       summayData: [],
       dataChartWorld: {
         labels: [],
         datasets: [],
       },
       dataChartVietNam: {
-        labels: [],
+        labels: ['Total Confirmed', 'Active', 'Deaths', 'Recovered'],
         datasets: [],
-        backgroundColor: [],
+        backgroundColor: ['#63B4B8', '#6ECB63', '#FF5C58', '#FFEF78'],
       },
+      dataMap: {},
     }
   },
   computed: {
@@ -119,16 +118,27 @@ export default {
   created() {
     this.$store.dispatch('getSummaryInfo').then((data) => {
       this.summayData = _.cloneDeep(data.Global)
+      this.summayData.TotalConfirmed = this.nFormatter(
+        this.summayData.TotalConfirmed,
+        1
+      )
+      this.summayData.TotalDeaths = this.nFormatter(
+        this.summayData.TotalDeaths,
+        1
+      )
+
+      const dataCountries = _.cloneDeep(data.Countries)
+      dataCountries.forEach((country) => {
+        this.dataMap[country.CountryCode] = country.TotalConfirmed
+      })
+      this.showMap = true
     })
   },
   methods: {
     getDaysRange(days) {
       var d = new Date()
-
       var day = new Date(d.getTime() - days * 24 * 60 * 60 * 1000)
-
       var toDate = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate() - 1}`
-
       var fromDate = `${day.getFullYear()}-${
         day.getMonth() + 1
       }-${day.getDate()}`
@@ -146,6 +156,7 @@ export default {
           this.dataChartWorld.labels.push(label)
           this.dataChartWorld.datasets.push(element.TotalConfirmed)
         })
+        this.isChartWorld = true
       })
     },
     getDataVietNamLastDay() {
@@ -154,7 +165,38 @@ export default {
         .dispatch('getVietnamCaseLastDay', date.endDate)
         .then((data) => {
           console.log(data)
+          data.forEach((element) => {
+            this.dataChartVietNam.datasets.push(
+              element.Active,
+              element.Confirmed,
+              element.Deaths,
+              element.Recovered
+            )
+          })
+
+          this.isChartVNL = true
         })
+    },
+    nFormatter(num, digits) {
+      const lookup = [
+        { value: 1, symbol: '' },
+        { value: 1e3, symbol: 'k' },
+        { value: 1e6, symbol: 'M' },
+        { value: 1e9, symbol: 'G' },
+        { value: 1e12, symbol: 'T' },
+        { value: 1e15, symbol: 'P' },
+        { value: 1e18, symbol: 'E' },
+      ]
+      const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
+      var item = lookup
+        .slice()
+        .reverse()
+        .find(function (item) {
+          return num >= item.value
+        })
+      return item
+        ? (num / item.value).toFixed(digits).replace(rx, '$1') + item.symbol
+        : '0'
     },
   },
 }

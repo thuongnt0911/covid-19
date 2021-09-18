@@ -49,6 +49,7 @@ export default {
             },
           ],
         },
+        tension: 0.8,
         options: {
           legend: {
             position: 'bottom',
@@ -57,21 +58,6 @@ export default {
             duration: 750,
           },
           scales: {
-            yAxes: [
-              {
-                ticks: {
-                  fontColor: 'rgba(0,0,0,0.5)',
-                  fontStyle: 'bold',
-                  beginAtZero: true,
-                  maxTicksLimit: 5,
-                  padding: 20,
-                },
-                gridLines: {
-                  drawTicks: false,
-                  display: false,
-                },
-              },
-            ],
             xAxes: [
               {
                 gridLines: {
